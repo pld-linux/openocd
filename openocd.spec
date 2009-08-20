@@ -8,6 +8,7 @@ Group:		Applications
 Source0:	http://download.berlios.de/%{name}/%{name}-%{version}.tar.bz2
 # Source0-md5:	14cd477f65cc738be954a454f1593879
 Patch0:		%{name}-davinci-nand-cs.patch
+Patch1:		%{name}-svf-handle-blank.patch
 URL:		http://openocd.berlios.de/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -36,6 +37,7 @@ the LPC3180's NAND flash controller is included.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
