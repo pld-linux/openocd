@@ -74,6 +74,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_bindir}/%{name}
 %{_datadir}/%{name}
-%{_infodir}/%{name}.info-?.gz
+%{_infodir}/%{name}.info*
 %{_libdir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
