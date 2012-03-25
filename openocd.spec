@@ -1,10 +1,10 @@
 # https://sourceforge.net/apps/trac/openocd/ticket/51
 %bcond_without	libftdi	# use libftdi instead of libftd2xx
-%bcond_without	system_jimtcl
+%bcond_with	system_jimtcl
 Summary:	Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing
 Name:		openocd
 Version:	0.5.0
-Release:	0.1
+Release:	1
 License:	GPL
 Group:		Applications
 Source0:	http://downloads.sourceforge.net/openocd/%{name}-%{version}.tar.bz2
