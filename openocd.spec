@@ -1,17 +1,29 @@
-#
+# https://sourceforge.net/apps/trac/openocd/ticket/51
+%bcond_without	libftdi	# use libftdi instead of libftd2xx
+%bcond_without	system_jimtcl
 Summary:	Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing
 Name:		openocd
-Version:	0.4.0
-Release:	1
+Version:	0.5.0
+Release:	0.1
 License:	GPL
 Group:		Applications
-Source0:	http://download.berlios.de/%{name}/%{name}-%{version}.tar.bz2
-# Source0-md5:	11a81b5f200fb0c318d9f49182bb71d7
-URL:		http://openocd.berlios.de/
+Source0:	http://downloads.sourceforge.net/openocd/%{name}-%{version}.tar.bz2
+# Source0-md5:	43434c2b5353c9b853278b8bff22cb1a
+Patch0:		%{name}-build.patch
+URL:		http://openocd.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+%if %{with system_jimtcl}
+# http://sourceforge.net/apps/trac/openocd/ticket/50
+BuildRequires:	jimtcl-devel < 0.73
+%endif
+%if %{with libftdi}
 BuildRequires:	libftdi-devel
+%else
+BuildRequires:	libftd2xx-devel
+%endif
 BuildRequires:	libtool
+BuildRequires:	libusb-devel
 BuildRequires:	texinfo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -34,6 +46,7 @@ the LPC3180's NAND flash controller is included.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -43,17 +56,29 @@ the LPC3180's NAND flash controller is included.
 %{__automake}
 
 %configure \
+	--disable-werror \
+	%{?with_system_jimtcl:--disable-internal-jimtcl} \
+%if %{with libftdi}
+	--enable-ft2232_libftdi \
+	--enable-usb_blaster_libftdi \
+	--enable-presto_libftdi \
+%else
+	CPPFLAGS="-I/usr/include/ftd2xx %{rpmcppflags}" \
+	--enable-ft2232_ftd2xx \
+	--enable-usb_blaster_ftd2xx \
+	--enable-presto_ftd2xx \
+%endif
+	--enable-amtjtagaccel \
 	--enable-arm-jtag-ew \
 	--enable-at91rm9200 \
+	--enable-buspirate \
 	--enable-dummy \
 	--enable-ep93xx \
-	--enable-ft2232_libftdi \
 	--enable-gw16012 \
 	--enable-ioutil \
 	--enable-jlink \
 	--enable-oocd_trace \
 	--enable-parport \
-	--enable-presto_libftdi \
 	--enable-rlink \
 	--enable-usbprog \
 	--enable-vsllink
@@ -76,4 +101,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}
 %{_infodir}/%{name}.info*
 %{_libdir}/%{name}
-%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/%{name}.1*

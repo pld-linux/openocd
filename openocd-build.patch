@@ -1,0 +1,47 @@
+diff -urN openocd-0.5.0.org/src/jtag/drivers/Makefile.am openocd-0.5.0/src/jtag/drivers/Makefile.am
+--- openocd-0.5.0.org/src/jtag/drivers/Makefile.am	2011-08-09 07:34:19.000000000 +0200
++++ openocd-0.5.0/src/jtag/drivers/Makefile.am	2012-03-25 11:23:44.876960535 +0200
+@@ -5,7 +5,8 @@
+ libocdjtagdrivers_la_SOURCES = \
+ 	$(DRIVERFILES)
+ 
+-nobase_dist_pkglib_DATA =
++pkgprgdir = $(libdir)/@PACKAGE@
++nobase_dist_pkgprg_DATA =
+ 
+ ULINK_FIRMWARE = $(srcdir)/OpenULINK
+ 
+@@ -64,7 +65,7 @@
+ endif
+ if ULINK
+ DRIVERFILES += ulink.c
+-nobase_dist_pkglib_DATA += $(ULINK_FIRMWARE)/ulink_firmware.hex
++nobase_dist_pkgprg_DATA += $(ULINK_FIRMWARE)/ulink_firmware.hex
+ endif
+ if VSLLINK
+ DRIVERFILES += vsllink.c
+diff -urN openocd-0.5.0.org/src/target/Makefile.am openocd-0.5.0/src/target/Makefile.am
+--- openocd-0.5.0.org/src/target/Makefile.am	2011-08-09 07:34:19.000000000 +0200
++++ openocd-0.5.0/src/target/Makefile.am	2012-03-25 11:23:59.447310533 +0200
+@@ -165,7 +165,8 @@
+ 	avr32_mem.h \
+ 	avr32_regs.h
+ 
+-nobase_dist_pkglib_DATA =
+-nobase_dist_pkglib_DATA += ecos/at91eb40a.elf
++pkgprgdir = $(libdir)/@PACKAGE@
++nobase_dist_pkgprg_DATA =
++nobase_dist_pkgprg_DATA += ecos/at91eb40a.elf
+ 
+ MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
+--- openocd-0.5.0/jimtcl/autosetup/find-tclsh~	2011-08-09 07:42:11.000000000 +0200
++++ openocd-0.5.0/jimtcl/autosetup/find-tclsh	2012-03-25 11:36:36.158741432 +0200
+@@ -3,7 +3,7 @@
+ # If not found, builds a bootstrap jimsh from source
+ d=$(dirname "$0")
+ PATH="$PATH:$d"
+-for tclsh in jimsh tclsh8.5 tclsh8.6 jimsh0; do
++for tclsh in jimsh tclsh tclsh8.5 tclsh8.6 jimsh0; do
+ 	$tclsh "$d/test-tclsh" 2>/dev/null && exit 0
+ done
+ echo 1>&2 "No installed jimsh or tclsh, building local bootstrap jimsh0"
