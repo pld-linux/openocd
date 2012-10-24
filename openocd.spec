@@ -1,21 +1,19 @@
 # https://sourceforge.net/apps/trac/openocd/ticket/51
 %bcond_without	libftdi	# use libftdi instead of libftd2xx
-%bcond_with	system_jimtcl
+%bcond_without	system_jimtcl
 Summary:	Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing
 Name:		openocd
-Version:	0.5.0
+Version:	0.6.1
 Release:	1
 License:	GPL
 Group:		Applications
 Source0:	http://downloads.sourceforge.net/openocd/%{name}-%{version}.tar.bz2
-# Source0-md5:	43434c2b5353c9b853278b8bff22cb1a
-Patch0:		%{name}-build.patch
+# Source0-md5:	946421efc2414ff89bdaf3f588b230f8
 URL:		http://openocd.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %if %{with system_jimtcl}
-# http://sourceforge.net/apps/trac/openocd/ticket/50
-BuildRequires:	jimtcl-devel < 0.73
+BuildRequires:	jimtcl-devel
 %endif
 %if %{with libftdi}
 BuildRequires:	libftdi-devel
@@ -46,7 +44,6 @@ the LPC3180's NAND flash controller is included.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -58,6 +55,7 @@ the LPC3180's NAND flash controller is included.
 %configure \
 	--disable-werror \
 	%{?with_system_jimtcl:--disable-internal-jimtcl} \
+	--enable-ftdi \
 %if %{with libftdi}
 	--enable-ft2232_libftdi \
 	--enable-usb_blaster_libftdi \
@@ -100,5 +98,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_infodir}/%{name}.info*
-%{_libdir}/%{name}
 %{_mandir}/man1/%{name}.1*
