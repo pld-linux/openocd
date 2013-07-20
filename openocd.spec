@@ -4,7 +4,7 @@
 Summary:	Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing
 Name:		openocd
 Version:	0.6.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications
 Source0:	http://downloads.sourceforge.net/openocd/%{name}-%{version}.tar.bz2
@@ -79,6 +79,7 @@ the LPC3180's NAND flash controller is included.
 	--enable-parport \
 	--enable-rlink \
 	--enable-usbprog \
+	--enable-stlink \
 	--enable-vsllink
 
 %{__make}
