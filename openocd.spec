@@ -1,10 +1,13 @@
 # https://sourceforge.net/apps/trac/openocd/ticket/51
+#
+# Conditional build:
 %bcond_without	libftdi	# use libftdi instead of libftd2xx
 %bcond_without	system_jimtcl
+
 Summary:	Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing
 Name:		openocd
 Version:	0.6.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications
 Source0:	http://downloads.sourceforge.net/openocd/%{name}-%{version}.tar.bz2
@@ -86,12 +89,17 @@ the LPC3180's NAND flash controller is included.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	-p /sbin/postshell
+-/usr/sbin/fix-info-dir -c %{_infodir}
+
+%postun	-p /sbin/postshell
+-/usr/sbin/fix-info-dir -c %{_infodir}
 
 %files
 %defattr(644,root,root,755)
